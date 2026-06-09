@@ -67,27 +67,29 @@ function App() {
   return (
     <div className="site-shell">
       <header className="site-header" id="top">
-        <p className="topline">Authentic Salvadorean Food</p>
-        <div className="brand-banner">
-          <a href="#home" className="logo-link" aria-label="Pupusa Loca home">
-            <img src="/images/pupusa-loca-logo.png" alt="Pupusa Loca" />
-          </a>
-        </div>
+        <section className="hero-photo" id="home" aria-label="Pupusa Loca breakfast dishes">
+          <img src="/images/breakfast-hero.jpg" alt="Salvadoran breakfast plates" />
+          <div className="hero-content">
+            <p className="topline">Authentic Salvadorean Food</p>
 
-        <nav className="main-nav" aria-label="Primary navigation">
-          {navItems.map((item) => (
-            <a key={item.href} href={item.href}>
-              {item.label}
-            </a>
-          ))}
-        </nav>
+            <nav className="main-nav" aria-label="Primary navigation">
+              {navItems.map((item) => (
+                <a key={item.href} href={item.href}>
+                  {item.label}
+                </a>
+              ))}
+            </nav>
+
+            <div className="brand-banner">
+              <a href="#home" className="logo-link" aria-label="Pupusa Loca home">
+                <img src="/images/pupusa-loca-logo.png" alt="Pupusa Loca" />
+              </a>
+            </div>
+          </div>
+        </section>
       </header>
 
       <main>
-        <section className="hero-photo" id="home" aria-label="Pupusa Loca breakfast dishes">
-          <img src="/images/breakfast-hero.jpg" alt="Salvadoran breakfast plates" />
-        </section>
-
         <section className="paper-section story-section" aria-labelledby="story-title">
           <div className="story-grid">
             <div className="story-copy">
