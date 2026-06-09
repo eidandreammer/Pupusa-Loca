@@ -27,9 +27,9 @@
   background:
     linear-gradient(
       180deg,
-      rgba(13, 25, 120, 0.5) 0%,
-      rgba(13, 25, 120, 0.12) 42%,
-      rgba(13, 25, 120, 0.28) 100%
+      rgba(21, 32, 87, 0.5) 0%,
+      rgba(21, 32, 87, 0.12) 42%,
+      rgba(21, 32, 87, 0.28) 100%
     );
   content: '';
   pointer-events: none;
@@ -110,7 +110,7 @@
       rgba(255, 255, 255, 0.24)
     );
   box-shadow:
-    0 18px 34px rgba(12, 25, 110, 0.24),
+    0 18px 34px rgba(21, 32, 87, 0.24),
     inset 0 1px 0 rgba(255, 255, 255, 0.42);
   backdrop-filter: blur(18px) saturate(145%);
   -webkit-backdrop-filter: blur(18px) saturate(145%);
@@ -194,11 +194,11 @@
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: minmax(0, 0.86fr) minmax(280px, 0.72fr);
-  gap: clamp(28px, 7vw, 96px);
-  width: min(940px, calc(100% - 40px));
+  grid-template-columns: minmax(0, 0.86fr) minmax(364px, 0.72fr);
+  gap: clamp(36px, 9.1vw, 125px);
+  width: min(1222px, calc(100% - 40px));
   margin: 0 auto;
-  padding: clamp(62px, 8vw, 98px) 0;
+  padding: clamp(81px, 10.4vw, 127px) 0;
 }
 
 .story-copy {
@@ -216,12 +216,14 @@
 }
 
 .story-copy .script-title {
+  margin-bottom: 36px;
+  font-size: clamp(3.9rem, 9.1vw, 6.5rem);
   text-align: left;
 }
 
 .story-copy p:not(.script-title) {
-  margin: 0 0 20px;
-  font-size: 1rem;
+  margin: 0 0 26px;
+  font-size: 1.3rem;
   font-weight: 650;
   line-height: 1.72;
 }
@@ -238,8 +240,8 @@
 }
 
 .story-art img {
-  width: min(420px, 100%);
-  filter: drop-shadow(0 26px 26px rgba(12, 25, 110, 0.14));
+  width: min(546px, 100%);
+  filter: drop-shadow(0 34px 34px rgba(21, 32, 87, 0.14));
 }
 
 .happy-hour {
@@ -249,7 +251,7 @@
   align-content: center;
   gap: 14px;
   padding: 54px 20px;
-  background: var(--lavender);
+  background: #152057;
   color: #fff;
   text-align: center;
 }
@@ -444,7 +446,7 @@
 
 .pill-link:hover,
 .pill-link:focus-visible {
-  box-shadow: 0 10px 24px rgba(12, 25, 110, 0.16);
+  box-shadow: 0 10px 24px rgba(21, 32, 87, 0.16);
   transform: translateY(-2px);
 }
 
@@ -657,7 +659,7 @@
 
   .story-grid {
     grid-template-columns: 1fr;
-    width: min(680px, calc(100% - 36px));
+    width: min(884px, calc(100% - 36px));
   }
 
   .story-copy .script-title {
@@ -665,7 +667,7 @@
   }
 
   .story-art img {
-    width: min(320px, 78vw);
+    width: min(416px, 78vw);
   }
 
   .footer-main {
@@ -698,7 +700,7 @@
   }
 
   .story-copy p:not(.script-title) {
-    font-size: 0.94rem;
+    font-size: 1.22rem;
   }
 
   .visit-band {
