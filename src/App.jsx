@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import './App.css'
+import Masonry from './components/Masonry'
 import { deliveryLinks, menuCategories } from './menuData'
 
 const instagramLink = 'https://www.instagram.com/pupusalocanj/'
@@ -10,52 +11,72 @@ const mapEmbedUrl =
 const restaurantAddress = '197 Market St, Paterson, NJ 07505'
 const restaurantPhone = '+19737426711'
 const restaurantPhoneDisplay = '973-742-6711'
+const menuPageHref = '/menu.html'
 
 const navItems = [
-  { label: 'Home', href: '#home' },
-  { label: 'Order Online', href: '#order' },
-  { label: 'Gallery', href: '#gallery' },
-  { label: 'Our Menu', href: '#menu' },
-  { label: 'Contact us', href: '#contact' },
+  { label: 'Home', href: '/' },
+  { label: 'Order Online', href: '/#order' },
+  { label: 'Gallery', href: '/#gallery' },
+  { label: 'Our Menu', href: menuPageHref },
+  { label: 'Contact us', href: '/#contact' },
 ]
 
 const dishes = [
   {
+    id: 'desayunos',
+    img: '/images/breakfast-hero.jpg',
+    url: menuPageHref,
+    height: 630,
     title: 'Desayunos',
-    image: '/images/breakfast-hero.jpg',
-    size: 'wide',
   },
   {
+    id: 'pupusas',
+    img: '/images/pupusas-hero.jpg',
+    url: menuPageHref,
+    height: 840,
     title: 'Pupusas',
-    image: '/images/pupusas-hero.jpg',
-    size: 'tall',
   },
   {
+    id: 'mariscos',
+    img: '/images/story-stack.png',
+    url: menuPageHref,
+    height: 780,
     title: 'Mariscos',
-    image: '/images/story-stack.png',
-    size: 'tall',
   },
   {
+    id: 'tamales',
+    img: '/images/tamales.jpg',
+    url: menuPageHref,
+    height: 630,
     title: 'Tamales',
-    image: '/images/tamales.jpg',
   },
   {
+    id: 'platillos',
+    img: '/images/platillo.jpg',
+    url: menuPageHref,
+    height: 690,
     title: 'Platillos',
-    image: '/images/platillo.jpg',
-    size: 'wide',
   },
   {
+    id: 'pollo-frito',
+    img: '/images/gallery-feature.jpg',
+    url: menuPageHref,
+    height: 750,
     title: 'Pollo Frito',
-    image: '/images/gallery-feature.jpg',
   },
   {
+    id: 'platanos-horchata',
+    img: '/images/plantains-horchata.jpg',
+    url: menuPageHref,
+    height: 570,
     title: 'Platanos y Horchata',
-    image: '/images/plantains-horchata.jpg',
   },
   {
+    id: 'especialidades',
+    img: '/images/story-stack.png',
+    url: menuPageHref,
+    height: 810,
     title: 'Especialidades',
-    image: '/images/story-stack.png',
-    size: 'tall',
   },
 ]
 
@@ -96,24 +117,31 @@ function buildOrderText(cartLines, subtotal, customer) {
 }
 
 function App() {
+  const normalizedPath = window.location.pathname.toLowerCase().replace(/\/$/, '')
+  const isMenuPage = normalizedPath.endsWith('/menu') || normalizedPath.endsWith('/menu.html')
+
   return (
     <div className="site-shell">
       <header className="site-header" id="top">
-        <section className="hero-photo" id="home" aria-label="Pupusa Loca breakfast dishes">
-          <img src="/images/breakfast-hero.jpg" alt="Salvadoran breakfast plates" />
+        <section
+          className={`hero-photo${isMenuPage ? ' page-hero' : ''}`}
+          id="home"
+          aria-label="Pupusa Loca breakfast dishes"
+        >
+          <img src={isMenuPage ? '/images/pupusas-hero.jpg' : '/images/breakfast-hero.jpg'} alt="Salvadoran dishes" />
           <div className="hero-content">
             <p className="topline">Authentic Salvadorean Food</p>
 
             <nav className="main-nav" aria-label="Primary navigation">
               {navItems.map((item) => (
-                <a key={item.href} href={item.href}>
+                <a key={item.href} href={item.href} aria-current={isMenuPage && item.href === menuPageHref ? 'page' : undefined}>
                   {item.label}
                 </a>
               ))}
             </nav>
 
             <div className="brand-banner">
-              <a href="#home" className="logo-link" aria-label="Pupusa Loca home">
+              <a href="/" className="logo-link" aria-label="Pupusa Loca home">
                 <img src="/images/pupusa-loca-logo.png" alt="Pupusa Loca" />
               </a>
             </div>
@@ -122,6 +150,12 @@ function App() {
       </header>
 
       <main>
+        {isMenuPage ? (
+          <section className="paper-section menu-section menu-page-section" id="menu" aria-labelledby="menu-title">
+            <OnlineMenu />
+          </section>
+        ) : (
+          <>
         <section className="paper-section story-section" aria-labelledby="story-title">
           <div className="story-grid">
             <div className="story-copy">
@@ -177,7 +211,7 @@ function App() {
             </h2>
             <p className="script-title">Fresh pickup and delivery</p>
             <div className="order-platforms" aria-label="Order options">
-              <a className="platform-link native" href="#menu">
+              <a className="platform-link native" href={menuPageHref}>
                 Order Here
               </a>
               <a className="platform-link" href={deliveryLinks.uberEats} target="_blank" rel="noreferrer">
@@ -199,51 +233,28 @@ function App() {
             <p className="script-title" id="gallery-title">
               Our Dishes
             </p>
-            <div className="masonry-gallery">
-              {dishes.map((dish) => (
-                <figure className={dish.size || ''} key={dish.title}>
-                  <img src={dish.image} alt={dish.title} loading="lazy" />
-                  <figcaption>{dish.title}</figcaption>
-                </figure>
-              ))}
+            <div className="dish-masonry" aria-label="Featured dish categories">
+              <Masonry
+                animateFrom="bottom"
+                blurToFocus
+                colorShiftOnHover={false}
+                duration={0.6}
+                ease="power3.out"
+                hoverScale={0.95}
+                items={dishes}
+                scaleOnHover
+                stagger={0.05}
+              />
             </div>
-            <a className="pill-link" href="#menu">
+            <a className="pill-link" href={menuPageHref}>
               View Menu
             </a>
           </div>
         </section>
 
-        <section className="paper-section menu-section" id="menu" aria-labelledby="menu-title">
-          <OnlineMenu />
-        </section>
-
-        <section className="paper-section contact-section" id="contact" aria-labelledby="contact-title">
-          <div className="contact-wrap">
-            <p className="script-title" id="contact-title">
-              Contact Us
-            </p>
-            <p className="reservation-note">We do not accept reservation via this form.</p>
-            <form className="contact-form" onSubmit={(event) => event.preventDefault()}>
-              <label>
-                <span>Name</span>
-                <input name="name" type="text" autoComplete="name" />
-              </label>
-              <label>
-                <span>Phone</span>
-                <input name="phone" type="tel" autoComplete="tel" />
-              </label>
-              <label>
-                <span>Email</span>
-                <input name="email" type="email" autoComplete="email" />
-              </label>
-              <label>
-                <span>Message</span>
-                <textarea name="message" rows="4" />
-              </label>
-              <button type="submit">Submit</button>
-            </form>
-          </div>
-        </section>
+       
+          </>
+        )}
       </main>
 
       <Footer />
