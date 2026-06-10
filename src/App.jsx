@@ -86,6 +86,9 @@ function App() {
     "--happy-hour-background-image": `url("${publicPath("images/flow.png")}")`,
     "--paper-background-image": `url("${publicPath("images/paper-background.jpg")}")`,
   };
+  const happyHourStyle = {
+    backgroundImage: `url("${publicPath("images/flow.png")}")`,
+  };
   const normalizedPath = window.location.pathname
     .toLowerCase()
     .replace(/\/$/, "");
@@ -278,7 +281,11 @@ function App() {
               </div>
             </section>
 
-            <section className="happy-hour" aria-labelledby="happy-hour-title">
+            <section
+              className="happy-hour"
+              style={happyHourStyle}
+              aria-labelledby="happy-hour-title"
+            >
               <h2 className="happy-hour-title" id="happy-hour-title">
                 <AnimatedText text="Happy" />
                 <span>
