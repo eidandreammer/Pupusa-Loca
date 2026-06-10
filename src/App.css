@@ -294,10 +294,9 @@
   gap: 14px;
   padding: 54px 20px;
   background:
-    linear-gradient(rgba(21, 32, 87, 0.68), rgba(21, 32, 87, 0.68)),
     var(--happy-hour-background-image) center / cover no-repeat,
     #152057;
-  color: #fff;
+  color: var(--blue);
   text-align: center;
 }
 
@@ -318,24 +317,26 @@
   flex-wrap: wrap;
   justify-content: center;
   gap: 0.18em;
-  color: var(--yellow);
+  color: var(--blue);
   font-family: var(--font-script);
   font-size: clamp(3.4rem, 8.2vw, 6.4rem);
   font-weight: 400;
   line-height: 0.9;
+  text-shadow: 0 3px 0 rgba(255, 210, 77, 0.52);
   text-transform: none;
 }
 
 .happy-hour h2 span {
-  color: var(--yellow);
+  color: var(--blue);
 }
 
 .happy-hour p {
   margin: 0;
-  color: var(--yellow);
+  color: var(--blue);
   font-family: var(--font-script);
   font-size: clamp(2.8rem, 7vw, 5.3rem);
   line-height: 1;
+  text-shadow: 0 3px 0 rgba(255, 210, 77, 0.52);
 }
 
 .location-section {
