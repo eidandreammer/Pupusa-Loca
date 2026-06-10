@@ -65,6 +65,11 @@ img {
   max-width: 100%;
 }
 
+.blur-text-segment {
+  display: inline-block;
+  will-change: transform, filter, opacity;
+}
+
 p {
   margin: 0;
 }

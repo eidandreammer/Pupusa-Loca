@@ -1,6 +1,7 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 
+import AnimatedText from './AnimatedText'
 import './Masonry.css'
 
 const useMedia = (queries, values, defaultValue) => {
@@ -245,7 +246,7 @@ function Masonry({
       {grid.map((item) => (
         <a
           key={item.id}
-          aria-label={item.title ? `View ${item.title} on the menu` : 'View item'}
+          aria-label={item.ariaLabel ?? (item.title ? `View ${item.title} on the menu` : 'View item')}
           className="item-wrapper"
           data-key={item.id}
           href={item.url}
@@ -254,7 +255,11 @@ function Masonry({
         >
           <span className="item-img" style={{ backgroundImage: `url(${item.img})` }}>
             {colorShiftOnHover && <span className="color-overlay" />}
-            {item.title ? <span className="item-label">{item.title}</span> : null}
+            {item.title ? (
+              <span className="item-label">
+                <AnimatedText text={item.title} />
+              </span>
+            ) : null}
           </span>
         </a>
       ))}
