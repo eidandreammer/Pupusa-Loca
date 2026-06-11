@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useRef } from "react";
 import "./App.css";
 import AnimatedText from "./components/AnimatedText";
 import Masonry from "./components/Masonry";
@@ -343,6 +343,8 @@ function App() {
   const [language, setLanguage] = useState(
     () => localStorage.getItem("preferred-language") || "es"
   );
+  const videoRef = useRef(null);
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
 
   const toggleLanguage = () => {
     setLanguage((prev) => {
@@ -398,6 +400,10 @@ function App() {
     const footerVisibilityThreshold = 0.3;
     const scrollThreshold = 6;
 
+    let targetProgress = 0;
+    let currentProgress = 0;
+    let animFrameId = 0;
+
     function getVisibleRatio(element) {
       if (!element) {
         return 0;
@@ -423,8 +429,8 @@ function App() {
       if (hero) {
         const rect = hero.getBoundingClientRect();
         const heroHeight = rect.height;
-        const progress = heroHeight > 0 ? Math.min(1, Math.max(0, currentScrollY / heroHeight)) : 0;
-        hero.style.setProperty("--scroll-progress", progress.toString());
+        targetProgress = heroHeight > 0 ? Math.min(1, Math.max(0, currentScrollY / heroHeight)) : 0;
+        hero.style.setProperty("--scroll-progress", targetProgress.toString());
       }
 
       const footer = document.querySelector(".site-footer");
@@ -472,14 +478,29 @@ function App() {
       frameId = window.requestAnimationFrame(updateNavVisibility);
     }
 
+    function tick() {
+      if (Math.abs(targetProgress - currentProgress) > 0.0001) {
+        currentProgress += (targetProgress - currentProgress) * 0.15;
+        if (Math.abs(targetProgress - currentProgress) < 0.0005) {
+          currentProgress = targetProgress;
+        }
+        if (videoRef.current && videoRef.current.duration && !isNaN(videoRef.current.duration)) {
+          videoRef.current.currentTime = currentProgress * videoRef.current.duration;
+        }
+      }
+      animFrameId = window.requestAnimationFrame(tick);
+    }
+
     updateNavVisibility();
     window.addEventListener("scroll", requestNavUpdate, { passive: true });
     window.addEventListener("resize", requestNavUpdate);
+    animFrameId = window.requestAnimationFrame(tick);
 
     return () => {
       window.removeEventListener("scroll", requestNavUpdate);
       window.removeEventListener("resize", requestNavUpdate);
       window.cancelAnimationFrame(frameId);
+      window.cancelAnimationFrame(animFrameId);
     };
   }, [isMenuPage]);
 
@@ -491,6 +512,15 @@ function App() {
           id="home"
           aria-label="Pupusa Loca restaurant hero"
         >
+          <video
+            ref={videoRef}
+            className={`hero-video${isVideoLoaded ? " is-loaded" : ""}`}
+            src={publicPath("Hero section video.mp4")}
+            muted
+            playsInline
+            preload="auto"
+            onLoadedData={() => setIsVideoLoaded(true)}
+          />
           <div className="hero-content">
             <p className="topline">
               <AnimatedText text={t("hero.topline")} />

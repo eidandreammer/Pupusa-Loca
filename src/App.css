@@ -41,6 +41,26 @@
   }
 }
 
+.hero-video {
+  position: absolute;
+  z-index: -1;
+  width: 104%;
+  height: 104%;
+  top: -2%;
+  left: -2%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  transform: scale(calc(1 + var(--scroll-progress) * 0.12));
+  transform-origin: center center;
+  will-change: transform;
+}
+
+.hero-video.is-loaded {
+  opacity: 1;
+}
+
 .hero-photo.page-hero {
   min-height: 80vh;
 }
