@@ -2106,3 +2106,259 @@
     font-size: 0.82rem;
   }
 }
+
+/* ==========================================================================
+   Interactive Ordering & Menu Image Styles
+   ========================================================================== */
+
+/* Split layout for cards that have images */
+.menu-item-main {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.menu-item-card.has-image .menu-item-copy {
+  flex: 1;
+  text-align: left;
+}
+
+/* Image container button */
+.menu-item-image-link {
+  display: block;
+  flex: 0 0 135px;
+  width: 135px;
+  height: 135px;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  outline: none;
+  position: relative;
+  margin-top: -18px;
+  margin-right: -18px;
+  transition: transform 180ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  will-change: transform;
+}
+
+@media (max-width: 480px) {
+  .menu-item-image-link {
+    flex: 0 0 110px;
+    width: 110px;
+    height: 110px;
+    margin-top: -14px;
+    margin-right: -14px;
+  }
+}
+
+.menu-item-image-link:hover {
+  transform: scale(1.08) rotate(2deg);
+}
+
+.menu-item-image-link:active {
+  transform: scale(0.92);
+}
+
+/* Transparent background food image styling with 3D shadow */
+.menu-item-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 12px rgba(6, 7, 10, 0.16));
+  transition: transform 300ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  will-change: transform;
+}
+
+/* Quick-bounce visual feedback when clicking to add to cart */
+.menu-item-image.bounce {
+  animation: imgBounce 400ms ease-out;
+}
+
+@keyframes imgBounce {
+  0% { transform: scale(1); }
+  30% { transform: scale(0.85); }
+  60% { transform: scale(1.2) rotate(-3deg); }
+  100% { transform: scale(1); }
+}
+
+/* Card glow feedback when added */
+.menu-item-card.glow {
+  animation: cardGlow 500ms ease-out;
+}
+
+@keyframes cardGlow {
+  0% {
+    box-shadow: 0 16px 28px rgba(6, 7, 10, 0.08);
+    border-color: var(--line);
+  }
+  30% {
+    box-shadow: 0 0 0 4px rgba(21, 32, 87, 0.24);
+    border-color: var(--blue);
+    background: #f4f6ff;
+  }
+  100% {
+    box-shadow: 0 16px 28px rgba(6, 7, 10, 0.08);
+    border-color: var(--line);
+  }
+}
+
+/* Cart badge bounce */
+.bounce {
+  animation: badgeBounce 300ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes badgeBounce {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.35); }
+  100% { transform: scale(1); }
+}
+
+/* Mobile Floating Cart Toggle button */
+.mobile-cart-toggle {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  right: 20px;
+  bottom: 20px;
+  width: 60px;
+  height: 60px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--blue);
+  color: #fff;
+  box-shadow: 0 8px 24px rgba(21, 32, 87, 0.36);
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.mobile-cart-toggle:hover,
+.mobile-cart-toggle:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(21, 32, 87, 0.48);
+}
+
+.mobile-cart-toggle:active {
+  transform: translateY(0) scale(0.92);
+}
+
+.mobile-cart-toggle-icon {
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mobile-cart-toggle-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.mobile-cart-toggle-count {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 5px;
+  border-radius: 50%;
+  background: #fff;
+  color: var(--blue);
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 950;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--blue);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.16);
+}
+
+/* Mobile Drawer Overlay / Backdrop */
+.cart-drawer-backdrop {
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(6, 7, 10, 0.6);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  animation: fadeIn 240ms ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.mobile-cart-close {
+  display: none;
+}
+
+/* Media Queries for Mobile/Tablet drawer overrides */
+@media (max-width: 768px) {
+  .mobile-cart-toggle {
+    display: flex;
+  }
+
+  .cart-panel {
+    position: fixed;
+    z-index: 1001;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: auto;
+    width: 100%;
+    max-height: 85vh;
+    border-radius: 16px 16px 0 0;
+    border-top: 2px solid var(--blue);
+    border-left: 0;
+    border-right: 0;
+    border-bottom: 0;
+    margin-top: 0;
+    box-shadow: 0 -10px 32px rgba(6, 7, 10, 0.28);
+    transform: translateY(100%);
+    transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    flex-direction: column;
+    padding: 24px 20px 20px;
+  }
+
+  .cart-panel.is-open {
+    transform: translateY(0);
+  }
+
+  .mobile-cart-close {
+    display: flex;
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    border: 0;
+    background: rgba(6, 7, 10, 0.06);
+    color: var(--black);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    z-index: 2;
+  }
+
+  .mobile-cart-close svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .cart-lines {
+    max-height: 240px;
+    overflow-y: auto;
+  }
+}
+

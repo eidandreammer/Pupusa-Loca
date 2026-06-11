@@ -34,19 +34,61 @@ const navItems = [
   { labelKey: "nav.contact", href: `${homeHref}#contact` },
 ];
 
-const galleryImageHeights = [
-  529, 507, 960, 960, 960, 960, 960, 960, 650, 713, 610, 529, 527, 598, 601,
-  445, 453, 500, 535, 447, 960, 960, 960, 531,
+const galleryImages = [
+  "4th-of-july-pancakes.jpg_202606110118.jpeg",
+  "Trocitos de Pollo Con Papitas.jpeg",
+  "atol-de-elote.jpg_202606110117.jpeg",
+  "baleadas-con-todo.jpg_202606110118.jpeg",
+  "bandeja-paisa.jpg_202606110118.jpeg",
+  "batido-mango.jpg_202606110117.jpeg",
+  "big-breakfast.jpg_202606110118.jpeg",
+  "bistec-de-palomilla.jpg_202606110117.jpeg",
+  "camarones-asados.jpg_202606110117.jpeg",
+  "chocolate-caliente.jpg_202606110117.jpeg",
+  "chuletas-de-cerdo.jpg_202606110117.jpeg",
+  "chuncky-monkey-pancakes.jpg_202606110117.jpeg",
+  "churrasco.jpg_202606110117.jpeg",
+  "desayuno-con-tamal.jpg_202606110117.jpeg",
+  "desayuno-salvadoreno.jpg_202606110117.jpeg",
+  "desayuno-tipico-con-carne.jpg_202606110117.jpeg",
+  "empanada-de-platano-3.jpg_202606110117.jpeg",
+  "ensalada-mar-y-tierra.jpg_202606110117.jpeg",
+  "fried-sweet-plantains.jpg_202606110117.jpeg",
+  "fruity-pebbles-waffles.jpg_202606110117.jpeg",
+  "guacamole-con-tajadas.jpg_202606110117.jpeg",
+  "jugo-natural-horchata.jpg_202606110116.jpeg",
+  "langosta-rellena-con-camarones.jpg_202606110116.jpeg",
+  "mar-y-tierra.jpg_202606110116.jpeg",
+  "oreo-cheesecake.jpg_202606110117.jpeg",
+  "pancake-lovers-dream.jpg_202606110116.jpeg",
+  "panes-rellenos.jpg_202606110116.jpeg",
+  "pastelitos-de-pollo-3.jpg_202606110116.jpeg",
+  "pechuga-a-la-hawaiana.jpg_202606110116.jpeg",
+  "pechuga-a-la-plancha.jpg_202606110116.jpeg",
+  "pechuga-con-champinones.jpg_202606110116.jpeg",
+  "picadera-mixta-sm.jpg_202606110116.jpeg",
+  "platanos-con-crema.jpg_202606110116.jpeg",
+  "plato-tipico-salvadoreno.jpg_202606110116.jpeg",
+  "pollo-con-tajadas.jpg_202606110116.jpeg",
+  "pupusa-revuelta.jpg_202606110116.jpeg",
+  "sopa-de-pollo.jpg_202606110115.jpeg",
+  "sopa-de-res.jpg_202606110115.jpeg",
+  "strawberry-shortcake-waffles.jpg_202606110115.jpeg",
+  "tiramisu.jpg_202606110116.jpeg",
+  "tres-leches.jpg_202606110116.jpeg",
 ];
 
-const dishes = galleryImageHeights.map((height, index) => {
+const galleryHeightsPattern = [500, 700, 600, 800, 550, 750, 650, 850];
+
+const dishes = galleryImages.map((filename, index) => {
   const photoNumber = String(index + 1).padStart(2, "0");
+  const height = galleryHeightsPattern[index % galleryHeightsPattern.length];
 
   return {
     ariaLabel: `View menu for Pupusa Loca gallery dish ${index + 1}`,
     height,
     id: `gallery-dish-${photoNumber}`,
-    img: publicPath(`images/gallery/dish-${photoNumber}.jpg`),
+    img: publicPath(`Pupusa Loca Menu Images/${filename}`).replace(/ /g, "%20"),
     url: menuPageHref,
   };
 });
@@ -515,7 +557,7 @@ function App() {
           <video
             ref={videoRef}
             className={`hero-video${isVideoLoaded ? " is-loaded" : ""}`}
-            src={publicPath("Hero section video.mp4")}
+            src={publicPath("Hero Section.mp4")}
             muted
             playsInline
             preload="auto"
@@ -782,16 +824,42 @@ function OnlineMenu({ t, language }) {
     pickupTime: "ASAP",
   });
 
+  const [bouncingItems, setBouncingItems] = useState({});
+  const [glowingCards, setGlowingCards] = useState({});
+  const [cartBouncing, setCartBouncing] = useState(false);
+  const [isCartOpen, setIsCartOpen] = useState(false);
+
+  const filteredMenuCategories = useMemo(() => {
+    return menuCategories
+      .map((category) => {
+        const items = category.items.filter((item) => {
+          if (item.image) {
+            return true;
+          }
+          const isPupusa =
+            item.id.toLowerCase().includes("pupusa") ||
+            item.name.toLowerCase().includes("pupusa") ||
+            item.description.toLowerCase().includes("pupusa");
+          return isPupusa;
+        });
+        return {
+          ...category,
+          items,
+        };
+      })
+      .filter((category) => category.items.length > 0);
+  }, []);
+
   const allItems = useMemo(
     () =>
-      menuCategories.flatMap((category) =>
+      filteredMenuCategories.flatMap((category) =>
         category.items.map((item) => ({
           ...item,
           categoryId: category.id,
           categoryTitle: category.title,
         })),
       ),
-    [],
+    [filteredMenuCategories],
   );
 
   const itemLookup = useMemo(
@@ -803,7 +871,7 @@ function OnlineMenu({ t, language }) {
 
   const filteredCategories = useMemo(
     () =>
-      menuCategories
+      filteredMenuCategories
         .filter(
           (category) =>
             activeCategory === "all" || category.id === activeCategory,
@@ -821,7 +889,7 @@ function OnlineMenu({ t, language }) {
           }),
         }))
         .filter((category) => category.items.length > 0),
-    [activeCategory, normalizedSearch],
+    [activeCategory, normalizedSearch, filteredMenuCategories],
   );
 
   const cartLines = useMemo(
@@ -861,6 +929,48 @@ function OnlineMenu({ t, language }) {
   const smsLink = `sms:${restaurantPhone}?body=${encodeURIComponent(orderText)}`;
   const canPlaceOrder = cartLines.length > 0;
 
+  useEffect(() => {
+    if (isCartOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isCartOpen]);
+
+  function triggerImageBounce(itemId) {
+    setBouncingItems((current) => ({
+      ...current,
+      [itemId]: true,
+    }));
+    setTimeout(() => {
+      setBouncingItems((current) => ({
+        ...current,
+        [itemId]: false,
+      }));
+    }, 400);
+  }
+
+  function triggerCardGlow(itemId) {
+    setGlowingCards((current) => ({
+      ...current,
+      [itemId]: true,
+    }));
+    setTimeout(() => {
+      setGlowingCards((current) => ({
+        ...current,
+        [itemId]: false,
+      }));
+    }, 500);
+  }
+
+  function triggerCartBounce() {
+    setCartBouncing(true);
+    setTimeout(() => setCartBouncing(false), 300);
+  }
+
   function getQuantity(itemId) {
     return cart.find((line) => line.id === itemId)?.quantity || 0;
   }
@@ -878,6 +988,9 @@ function OnlineMenu({ t, language }) {
 
       return [...current, { id: item.id, quantity: 1 }];
     });
+    triggerImageBounce(item.id);
+    triggerCardGlow(item.id);
+    triggerCartBounce();
   }
 
   function updateQuantity(itemId, amount) {
@@ -891,11 +1004,13 @@ function OnlineMenu({ t, language }) {
         )
         .filter((line) => line.quantity > 0),
     );
+    triggerCartBounce();
   }
 
   function removeItem(itemId) {
     setOrderStatus("");
     setCart((current) => current.filter((line) => line.id !== itemId));
+    triggerCartBounce();
   }
 
   function handleCustomerChange(event) {
@@ -971,7 +1086,7 @@ function OnlineMenu({ t, language }) {
           >
             <AnimatedText text={t("menu.all")} />
           </button>
-          {menuCategories.map((category) => (
+          {filteredMenuCategories.map((category) => (
             <button
               type="button"
               className={activeCategory === category.id ? "active" : ""}
@@ -1014,17 +1129,37 @@ function OnlineMenu({ t, language }) {
                     const quantity = getQuantity(item.id);
 
                     return (
-                      <article className="menu-item-card" key={item.id}>
-                        <div className="menu-item-copy">
-                          <div className="menu-item-title">
-                            <h4>
-                              <AnimatedText text={item.name} />
-                            </h4>
-                            <strong>
-                              <AnimatedText text={formatPrice(item.price)} />
-                            </strong>
+                      <article
+                        className={`menu-item-card${item.image ? " has-image" : ""}${glowingCards[item.id] ? " glow" : ""}`}
+                        key={item.id}
+                      >
+                        <div className="menu-item-main">
+                          <div className="menu-item-copy">
+                            <div className="menu-item-title">
+                              <h4>
+                                <AnimatedText text={item.name} />
+                              </h4>
+                              <strong>
+                                <AnimatedText text={formatPrice(item.price)} />
+                              </strong>
+                            </div>
+                            <AnimatedText as="p" text={item.description} />
                           </div>
-                          <AnimatedText as="p" text={item.description} />
+
+                          {item.image && (
+                            <button
+                              type="button"
+                              className="menu-item-image-link"
+                              onClick={() => addItem(item)}
+                              aria-label={`Add ${item.name} to order`}
+                            >
+                              <img
+                                src={publicPath(item.image)}
+                                alt={item.name}
+                                className={`menu-item-image ${bouncingItems[item.id] ? "bounce" : ""}`}
+                              />
+                            </button>
+                          )}
                         </div>
 
                         <div className="menu-item-actions">
@@ -1074,7 +1209,19 @@ function OnlineMenu({ t, language }) {
           )}
         </div>
 
-        <aside className="cart-panel" aria-labelledby="cart-title">
+        <aside className={`cart-panel${isCartOpen ? " is-open" : ""}`} aria-labelledby="cart-title">
+          <button
+            type="button"
+            className="mobile-cart-close"
+            onClick={() => setIsCartOpen(false)}
+            aria-label="Close cart drawer"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+
           <div className="cart-heading">
             <div>
               <AnimatedText
@@ -1086,7 +1233,7 @@ function OnlineMenu({ t, language }) {
                 <AnimatedText text={t("cart.title")} />
               </h3>
             </div>
-            <span>
+            <span className={cartBouncing ? "bounce" : ""}>
               <AnimatedText text={itemCount} />
             </span>
           </div>
@@ -1239,6 +1386,32 @@ function OnlineMenu({ t, language }) {
           ) : null}
         </aside>
       </div>
+
+      {isCartOpen && (
+        <div
+          className="cart-drawer-backdrop"
+          onClick={() => setIsCartOpen(false)}
+          aria-hidden="true"
+        />
+      )}
+
+      {itemCount > 0 && (
+        <button
+          type="button"
+          className={`mobile-cart-toggle ${cartBouncing ? "bounce" : ""}`}
+          onClick={() => setIsCartOpen(true)}
+          aria-label={`Open cart. ${itemCount} items in cart.`}
+        >
+          <div className="mobile-cart-toggle-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <circle cx="9" cy="21" r="1" />
+              <circle cx="20" cy="21" r="1" />
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+            </svg>
+          </div>
+          <span className="mobile-cart-toggle-count">{itemCount}</span>
+        </button>
+      )}
     </div>
   );
 }
