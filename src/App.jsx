@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState, useRef } from "react";
 import "./App.css";
 import AnimatedText from "./components/AnimatedText";
-import Masonry from "./components/Masonry";
 import { deliveryLinks, menuCategories } from "./menuData";
 
 const instagramHandle = "@lapupusaloca_wny";
@@ -78,20 +77,37 @@ const galleryImages = [
   "tres-leches.jpg_202606110116.jpeg",
 ];
 
-const galleryHeightsPattern = [500, 700, 600, 800, 550, 750, 650, 850];
-
 const dishes = galleryImages.map((filename, index) => {
   const photoNumber = String(index + 1).padStart(2, "0");
-  const height = galleryHeightsPattern[index % galleryHeightsPattern.length];
 
   return {
     ariaLabel: `View menu for Pupusa Loca gallery dish ${index + 1}`,
-    height,
     id: `gallery-dish-${photoNumber}`,
     img: publicPath(`Pupusa Loca Menu Images/${filename}`).replace(/ /g, "%20"),
     url: menuPageHref,
   };
 });
+
+const dishCarouselRows = [
+  {
+    direction: "left",
+    duration: "92s",
+    id: "dish-carousel-row-1",
+    items: dishes.filter((_, index) => index % 3 === 0),
+  },
+  {
+    direction: "right",
+    duration: "104s",
+    id: "dish-carousel-row-2",
+    items: dishes.filter((_, index) => index % 3 === 1),
+  },
+  {
+    direction: "left",
+    duration: "88s",
+    id: "dish-carousel-row-3",
+    items: dishes.filter((_, index) => index % 3 === 2),
+  },
+];
 
 const businessHours = [
   { daysKey: "days.weekday", hoursKey: "hours.weekday" },
@@ -401,12 +417,13 @@ function App() {
   const shellStyle = {
     "--hero-background-image": `url("${publicPath("images/hero-desktop.png")}")`,
     "--hero-background-image-mobile": `url("${publicPath("images/hero-mobile.png")}")`,
-    "--happy-hour-background-image": `url("${publicPath("images/flow.png")}")`,
+    "--happy-hour-background-image": `url("${publicPath("images/flow.jpeg")}")`,
     "--paper-background-image": `url("${publicPath("images/paper-background.jpg")}")`,
+    "--schedule-background-image": `url("${publicPath("images/schedule background.png")}")`,
     "--wood-background-image": `url("${publicPath("images/Dark wood.png")}")`,
   };
   const happyHourStyle = {
-    backgroundImage: `url("${publicPath("images/flow.png")}")`,
+    backgroundImage: `url("${publicPath("images/flow.jpeg")}")`,
   };
   const normalizedPath = window.location.pathname
     .toLowerCase()
@@ -780,21 +797,41 @@ function App() {
                   id="gallery-title"
                   text={t("gallery.title")}
                 />
-                <div
-                  className="dish-masonry"
-                  aria-label="Featured dish categories"
-                >
-                  <Masonry
-                    animateFrom="bottom"
-                    blurToFocus
-                    colorShiftOnHover={false}
-                    duration={0.6}
-                    ease="power3.out"
-                    hoverScale={0.95}
-                    items={dishes}
-                    scaleOnHover
-                    stagger={0.05}
-                  />
+                <div className="dish-carousel-stack" aria-label="Featured dishes">
+                  {dishCarouselRows.map((row) => (
+                    <div
+                      className={`dish-carousel-row moves-${row.direction}`}
+                      key={row.id}
+                      style={{ "--carousel-duration": row.duration }}
+                    >
+                      <div className="dish-carousel-track">
+                        {[0, 1].map((copyIndex) => (
+                          <div
+                            className="dish-carousel-group"
+                            key={`${row.id}-${copyIndex}`}
+                            aria-hidden={copyIndex === 1 ? "true" : undefined}
+                          >
+                            {row.items.map((dish) => (
+                              <a
+                                className="dish-carousel-card"
+                                href={dish.url}
+                                key={`${row.id}-${copyIndex}-${dish.id}`}
+                                aria-label={dish.ariaLabel}
+                                tabIndex={copyIndex === 1 ? -1 : undefined}
+                              >
+                                <img
+                                  src={dish.img}
+                                  alt=""
+                                  loading="lazy"
+                                  decoding="async"
+                                />
+                              </a>
+                            ))}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
                 </div>
                 <a className="pill-link" href={menuPageHref}>
                   <AnimatedText text={t("gallery.btn.menu")} />
