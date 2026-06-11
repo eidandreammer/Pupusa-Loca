@@ -162,6 +162,10 @@ const translations = {
     "contact.btn.directions": "Cómo Llegar",
     "contact.btn.call": "Llamar Ahora",
     "contact.available": "Disponible para dine-in, take-out y delivery.",
+    "days.weekday": "Lun-Jue",
+    "hours.weekday": "10am-9pm",
+    "days.weekend": "Vie-Dom",
+    "hours.weekend": "10am-10pm",
 
     "footer.tagline": "La Pupusa Loca | Restaurant & Bar en West New York, NJ",
     "footer.navTitle": "Navegación",
@@ -284,6 +288,10 @@ const translations = {
     "contact.btn.directions": "Get Directions",
     "contact.btn.call": "Call Now",
     "contact.available": "Available for dine-in, take-out, and delivery.",
+    "days.weekday": "Mon-Thu",
+    "hours.weekday": "10am-9pm",
+    "days.weekend": "Fri-Sun",
+    "hours.weekend": "10am-10pm",
 
     "footer.tagline": "La Pupusa Loca | Restaurant & Bar in West New York, NJ",
     "footer.navTitle": "Navigation",
