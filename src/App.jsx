@@ -281,12 +281,9 @@ function App() {
               aria-labelledby="happy-hour-title"
             >
               <h2 className="happy-hour-title" id="happy-hour-title">
-                <AnimatedText text="Happy" />
                 <span>
-                  <AnimatedText text="Hour" />
                 </span>
               </h2>
-              <AnimatedText as="p" text="50% Off" />
             </section>
 
             <section

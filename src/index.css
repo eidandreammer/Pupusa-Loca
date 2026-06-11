@@ -1,14 +1,14 @@
 :root {
-  --blue: #152057;
-  --accent-blue: #152057;
+  --blue: #06070a;
+  --accent-blue: #06070a;
   --white: #ffffff;
   --black: #06070a;
   --lavender: #8990ae;
   --paper: #ffffff;
   --surface: #fbfbfd;
   --text: rgba(6, 7, 10, 0.72);
-  --line: rgba(21, 32, 87, 0.16);
-  --soft-line: rgba(21, 32, 87, 0.08);
+  --line: rgba(6, 7, 10, 0.16);
+  --soft-line: rgba(6, 7, 10, 0.08);
   --font-body:
     "Trebuchet MS", "Avenir Next", Avenir, "Segoe UI", Helvetica, Arial,
     sans-serif;
@@ -60,7 +60,7 @@ button:focus-visible,
 a:focus-visible,
 input:focus-visible,
 textarea:focus-visible {
-  outline: 3px solid rgba(21, 32, 87, 0.5);
+  outline: 3px solid rgba(6, 7, 10, 0.5);
   outline-offset: 3px;
 }
 
