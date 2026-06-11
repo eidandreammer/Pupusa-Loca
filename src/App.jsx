@@ -83,8 +83,10 @@ function buildOrderText(cartLines, subtotal, customer) {
 function App() {
   const [isNavHidden, setIsNavHidden] = useState(false);
   const shellStyle = {
+    "--hero-background-image": `url("${publicPath("images/breakfast-hero.png")}")`,
     "--happy-hour-background-image": `url("${publicPath("images/flow.png")}")`,
     "--paper-background-image": `url("${publicPath("images/paper-background.jpg")}")`,
+    "--wood-background-image": `url("${publicPath("images/Dark wood.png")}")`,
   };
   const happyHourStyle = {
     backgroundImage: `url("${publicPath("images/flow.png")}")`,
@@ -184,16 +186,8 @@ function App() {
         <section
           className={`hero-photo${isMenuPage ? " page-hero" : ""}`}
           id="home"
-          aria-label="Pupusa Loca breakfast dishes"
+          aria-label="Pupusa Loca restaurant hero"
         >
-          <img
-            src={
-              isMenuPage
-                ? publicPath("images/pupusas-hero.jpg")
-                : publicPath("images/breakfast-hero.jpg")
-            }
-            alt="Salvadoran dishes"
-          />
           <div className="hero-content">
             <p className="topline">
               <AnimatedText text="Authentic Salvadorean Food" />
@@ -222,7 +216,7 @@ function App() {
 
             <div className="brand-banner">
               <a href={homeHref} className="logo-link" aria-label="Pupusa Loca home">
-                <img src={publicPath("images/pupusa-loca-logo.png")} alt="Pupusa Loca" />
+                <img src={publicPath("images/Pupusa loca logo white.png")} alt="Pupusa Loca" />
               </a>
             </div>
           </div>
@@ -340,19 +334,19 @@ function App() {
                 </div>
                 <div className="order-showcase">
                   <img
-                    src={publicPath("images/demostrarion1.png")}
+                    src={publicPath("images/1.png")}
                     alt="Pupusa Loca grilled steak and cocktail"
                   />
                   <img
-                    src={publicPath("images/demostrarion2.png")}
+                    src={publicPath("images/2.png")}
                     alt="Pupusa Loca seafood cocktail, shrimp rice, and pork chops"
                   />
                   <img
-                    src={publicPath("images/demostrarion3.png")}
+                    src={publicPath("images/3.png")}
                     alt="Pupusa Loca breakfast plate and grilled steak"
                   />
                   <img
-                    src={publicPath("images/story-stack.png")}
+                    src={publicPath("images/4.png")}
                     alt="Pupusa Loca specialty dishes"
                   />
                 </div>
@@ -959,7 +953,7 @@ function Footer() {
         <div className="footer-main">
           <div className="footer-brand">
             <a href="#top" className="footer-logo" aria-label="Back to top">
-              <img src={publicPath("images/pupusa-loca-logo.png")} alt="Pupusa Loca" />
+              <img src={publicPath("images/Pupusa loca logo white.png")} alt="Pupusa Loca" />
             </a>
             <AnimatedText
               as="p"

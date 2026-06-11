@@ -1,11 +1,14 @@
 :root {
   --blue: #152057;
   --accent-blue: #152057;
-  --yellow: #ffd24d;
+  --white: #ffffff;
+  --black: #06070a;
   --lavender: #8990ae;
-  --paper: #fbfbfb;
-  --text: #59606e;
+  --paper: #ffffff;
+  --surface: #fbfbfd;
+  --text: rgba(6, 7, 10, 0.72);
   --line: rgba(21, 32, 87, 0.16);
+  --soft-line: rgba(21, 32, 87, 0.08);
   --font-body:
     "Trebuchet MS", "Avenir Next", Avenir, "Segoe UI", Helvetica, Arial,
     sans-serif;
@@ -15,7 +18,7 @@
   --font-script: "Brush Script MT", "Segoe Script", "Snell Roundhand", cursive;
 
   font-family: var(--font-body);
-  color: var(--blue);
+  color: var(--black);
   background: var(--paper);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
