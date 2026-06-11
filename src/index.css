@@ -1,3 +1,13 @@
+@font-face {
+  font-family: "ITC Plaza";
+  src: url("/fonts/itc-plaza.woff2") format("woff2"),
+       url("/fonts/itc-plaza.woff") format("woff"),
+       url("/fonts/itc-plaza.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --blue: #06070a;
   --accent-blue: #06070a;
@@ -15,7 +25,7 @@
   --font-display:
     Impact, Haettenschweiler, "Arial Narrow Bold", "Franklin Gothic Condensed",
     "Arial Narrow", sans-serif;
-  --font-script: "Brush Script MT", "Segoe Script", "Snell Roundhand", cursive;
+  --font-script: "ITC Plaza", "Segoe Script", "Snell Roundhand", cursive;
 
   font-family: var(--font-body);
   color: var(--black);
